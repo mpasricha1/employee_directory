@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from './components/Header';
 import Table from './components/EmployeeTable';
 import Search from './components/Search';
+import Filters from './components/Filters'
 import API from './utils/Api.js'
 
 class App extends React.Component{
@@ -31,7 +32,6 @@ class App extends React.Component{
 	handleSubmit = (event) => {
 		event.preventDefault();
 		let names = this.state.searchedName.split(' ')
-		console.log(this.state.employees)
 		this.setState({
 			employees: this.state.employees.filter(emp => emp.name.first === names[0] &&
 		 												 emp.name.last === names[1])
@@ -44,6 +44,15 @@ class App extends React.Component{
 		this.setState({searchedName: empName});
 		
 	}
+	handleSort = (key, asc) => {
+		let empSorted = [...this.state.employees]; 
+
+		empSorted.sort((a,b) => {
+			return a["name"][key] > b["name"][key] ? asc * 1: asc *-1; 
+		});
+
+		this.setState({employees: empSorted}) 
+	}
 
 	render(){
 		return (
@@ -51,6 +60,7 @@ class App extends React.Component{
 				<Header/>
 				<Search handleSubmit={this.handleSubmit}
 						handleInputChange={this.handleInputChange} />
+				<Filters handleSort={this.handleSort}/>
 				<Table data={this.state.employees}/>
 			</>
 		)

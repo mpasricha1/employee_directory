@@ -7,7 +7,7 @@ function Table(props){
 			<thead>
 				<tr>
 					<th scope='col'/>
-					<th scope='col'>First Name</th>
+					<th scope='col'>First name</th>
 					<th scope='col'>Last Name</th>
 					<th scope='col'>City</th>
 					<th scope='col'>State</th>
