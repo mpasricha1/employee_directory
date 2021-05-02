@@ -6,7 +6,8 @@ import API from './utils/Api.js'
 
 class App extends React.Component{
 	state = {
-		employees:[]
+		employees:[], 
+		searchedName: ""
 	}
 
 	componentDidMount(){
@@ -15,24 +16,41 @@ class App extends React.Component{
 
 	getRandomEmployees = () => {
 		API.getEmployees().then(data => {
-
 			let employeeData = [...data.data.results]
 			this.setState({employees: employeeData})
+			console.log(employeeData)
 
 		})
 	}
 
 	handleSort = () => {
 		let employeeSorted = [...this.state.employees];
-
 		console.log(employeeSorted);
+	}
+
+	handleSubmit = (event) => {
+		event.preventDefault();
+		let names = this.state.searchedName.split(' ')
+		console.log(this.state.employees)
+		this.setState({
+			employees: this.state.employees.filter(emp => emp.name.first === names[0] &&
+		 												 emp.name.last === names[1])
+		}) 
+		
+	}
+
+	handleInputChange = event => {
+		let empName = (event.target.value);
+		this.setState({searchedName: empName});
+		
 	}
 
 	render(){
 		return (
 			<>
 				<Header/>
-				<Search/>
+				<Search handleSubmit={this.handleSubmit}
+						handleInputChange={this.handleInputChange} />
 				<Table data={this.state.employees}/>
 			</>
 		)
